@@ -27,7 +27,6 @@ document.querySelectorAll("#card").forEach(element => {
                     console.log("Kartu berbeda! -5");
                     setTimeout(resetFlippedCard, 1000);
                 }
-
             }
         }
     });
