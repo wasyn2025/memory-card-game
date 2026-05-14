@@ -8,10 +8,13 @@
     transform-style: preserve-3d;
 }
 
-.card-wrapper:hover>div {
+/* .card-wrapper:hover>div {
+    transform: rotateY(180deg);
+} */
+
+.rotate180 {
     transform: rotateY(180deg);
 }
-
 
 .card-front,
 .card-back {
