@@ -26,19 +26,25 @@
 
     <!-- header -->
     <div class="mb-5 flex items-center justify-between">
-        <button id="back-button"
-            class="active:scale-[0.98] bg-white flex justify-center items-center rounded-md p-2 cursor-pointer">
-            <i data-lucide="arrow-left" class="size-[18px]"></i>
-        </button>
+        <div class="flex items-center justify-between gap-3">
+            <button clickable data-action="back"
+                class="active:scale-[0.98] bg-white flex justify-center items-center rounded-md p-2 cursor-pointer">
+                <i data-lucide="arrow-left" class="size-[18px]"></i>
+            </button>
+            <button clickable data-action="restart"
+                class="active:scale-[0.98] bg-red-500 flex justify-center items-center rounded-md p-2 cursor-pointer">
+                <i data-lucide="rotate-ccw" class="size-[18px] text-red-950"></i>
+            </button>
+        </div>
         <div class="flex items-center gap-3">
-            <div class="flex items-center gap-1.5 bg-amber-400 rounded-md py-2 px-3">
-                <i data-lucide="medal" class="size-[18px] text-amber-900"></i>
-                <span class="font-semibold text-sm text-amber-900">3500</span>
+            <div title="Highscore" class="flex items-center gap-1.5 bg-amber-400 rounded-md py-2 px-3">
+                <i data-lucide="trophy" class="size-[18px] text-amber-900"></i>
+                <span id="highscore-text" class="font-semibold text-sm text-amber-900">0</span>
             </div>
             <div class="relative">
-                <div class="flex items-center gap-1.5 bg-emerald-500 rounded-md py-2 px-3">
-                    <i data-lucide="star" class="size-[18px] text-green-900"></i>
-                    <span class="font-semibold text-sm text-green-900">200</span>
+                <div title="Score" class="flex items-center gap-1.5 bg-emerald-500 rounded-md py-2 px-3">
+                    <i data-lucide="tally-5" class="size-[18px] text-green-900"></i>
+                    <span id="score-text" class="font-semibold text-sm text-green-900">0</span>
                 </div>
                 <div class="text-white p-2 w-full absolute">
                     <div id="score-info" class="text-center text-sm text-emerald-500 opacity-0">+100</div>
