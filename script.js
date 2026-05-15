@@ -8,7 +8,7 @@ let selectedCard = [];
 let cardData = {};
 let cardTotal = 0;
 const cardContainer = document.querySelector("#card-container");
-let clickSound, winSound = null;
+let clickSound, flippedSound, matchedSound, winSound = null;
 
 function generateCard() {
     cardContainer.innerHTML = '';
@@ -25,7 +25,7 @@ function generateCard() {
                     class="text-white text-5xl font-bold opacity-75 transition-opacity duration-200 group-hover:opacity-100">
                     ?</div>
                 <div id="card-back-content" class="card-back text-white text-5xl rounded-md">${emoji}</div>
-            </div>
+            </div> 
         </div>`;
     }
 
@@ -45,19 +45,20 @@ function generateCard() {
                     const card2 = cardData[selectedCard[1]]?.name;
 
                     if (card1 === card2) {
-                        console.log("Kartu sama! +5");
-                        winSound.cloneNode().play();
                         cardTotal -= 1;
                         setTimeout(removeMatchedCard, 500);
                     } else {
-                        console.log("Kartu berbeda!");
                         setTimeout(resetFlippedCard, 500);
                     }
                 }
             }
 
             if (cardTotal === 0) {
-                setTimeout(() => alert("Gameover!"), 1500);
+                setTimeout(() => {
+                    console.log("Gameover!");
+                    winSound.cloneNode().play();
+                }, 1000);
+                setTimeout(() => window.location.reload(), 3000);
             }
         });
     });
@@ -80,7 +81,7 @@ function loadEmojiData() {
         "xh411": { "name": "watermelon", "emoji": "🍉" },
         "xh412": { "name": "strawberry", "emoji": "🍓" },
     };
-    cardTotal = cardData.length / 2;
+    cardTotal = Object.keys(cardData).length / 2;
 }
 
 function resetFlippedCard() {
@@ -88,16 +89,20 @@ function resetFlippedCard() {
     document.querySelector(`[name="${selectedCard[0]}"]`).classList.remove("pointer-events-none");
     document.querySelector(`[name="${selectedCard[1]}"]`).classList.remove("rotate180");
     document.querySelector(`[name="${selectedCard[1]}"]`).classList.remove("pointer-events-none");
+    flippedSound.cloneNode().play();
     selectedCard.length = [];
 }
 
 function removeMatchedCard() {
     document.querySelector(`[name="${selectedCard[0]}"]`).parentElement.classList.add("opacity-0");
     document.querySelector(`[name="${selectedCard[1]}"]`).parentElement.classList.add("opacity-0");
+    matchedSound.cloneNode().play();
     selectedCard.length = [];
 }
 
 function loadSoundEffect() {
     clickSound = new Audio('./sounds/clicksound.mp3');
-    winSound = new Audio('./sounds/winsound.mp3')
+    flippedSound = new Audio('./sounds/flipped.mp3')
+    matchedSound = new Audio('./sounds/matched.mp3');
+    winSound = new Audio('./sounds/win.mp3');
 }
