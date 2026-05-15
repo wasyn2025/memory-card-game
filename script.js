@@ -14,7 +14,7 @@ function generateCard() {
     cardContainer.innerHTML = '';
     const cardDataEntries = Object.entries(cardData);
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < cardTotal * 2; i++) {
         const id = cardDataEntries[i][0];
         const emoji = cardDataEntries[i][1].emoji;
 
@@ -82,6 +82,18 @@ function loadEmojiData() {
         "xh412": { "name": "strawberry", "emoji": "🍓" },
     };
     cardTotal = Object.keys(cardData).length / 2;
+    cardData = shuffleCardData(cardData);
+}
+
+function shuffleCardData(cardData) {
+    const entries = Object.entries(cardData);
+
+    for (let i = entries.length - 1; i > 0; i--) {
+        const randomIndex = Math.floor(Math.random() * (i + 1));
+        [entries[i], entries[randomIndex]] = [entries[randomIndex], entries[i]];
+    }
+
+    return Object.fromEntries(entries);
 }
 
 function resetFlippedCard() {
