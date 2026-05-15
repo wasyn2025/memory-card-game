@@ -35,3 +35,25 @@
     transform: rotateY(180deg);
     background: #44403c;
 }
+
+.reward-animation {
+    transform: translateY(30px);
+    opacity: 0;
+    animation: slideAnimation 1s linear forwards; 
+}
+
+@keyframes slideAnimation  {
+    from {
+        opacity: 0;
+        transform: translateY(20px)
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+}

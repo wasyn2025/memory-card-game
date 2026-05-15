@@ -1,14 +1,61 @@
-document.addEventListener("DOMContentLoaded", () => {
-    loadSoundEffect();
-    loadEmojiData();
-    generateCard();
-});
-
 let selectedCard = [];
 let cardData = {};
 let cardTotal = 0;
 const cardContainer = document.querySelector("#card-container");
-let clickSound, flippedSound, matchedSound, winSound = null;
+let clickSound, flippedSound, matchedSound, winSound, mouseClick = null;
+let backButton = document.querySelector("#back-button");
+const scoreInfo = document.querySelector("#score-info");
+
+function playAnimation() {
+    scoreInfo.classList.remove("reward-animation");
+    void scoreInfo.offsetWidth;
+    scoreInfo.classList.add("reward-animation");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadSoundEffect();
+    loadEmojiData();
+    generateCard();
+
+    document.querySelectorAll("#card").forEach(element => {
+        element.addEventListener("click", (event) => {
+            let targetElement = event.currentTarget;
+            let attribute = targetElement.getAttribute("name");
+
+            if (selectedCard.length < 2 && !selectedCard.includes(attribute)) {
+                selectedCard.push(attribute);
+                targetElement.classList.add("rotate180");
+                targetElement.classList.add("pointer-events-none");
+                clickSound.cloneNode().play();
+
+                if (selectedCard.length === 2) {
+                    const card1 = cardData[selectedCard[0]]?.name;
+                    const card2 = cardData[selectedCard[1]]?.name;
+
+                    if (card1 === card2) {
+                        cardTotal -= 1;
+                        winSound.cloneNode().play(); setTimeout(removeMatchedCard, 500);
+                    } else {
+                        setTimeout(resetFlippedCard, 500);
+                    }
+                }
+            }
+
+            if (cardTotal === 0) {
+                setTimeout(() => winSound.cloneNode().play(), 1000);
+                setTimeout(() => {
+                    loadEmojiData();
+                    generateCard();
+                }, 3000);
+            }
+        });
+    });
+
+    backButton.addEventListener("click", () => {
+        mouseClick.cloneNode().play();
+        playAnimation();
+    });
+});
 
 function generateCard() {
     cardContainer.innerHTML = '';
@@ -28,40 +75,6 @@ function generateCard() {
             </div> 
         </div>`;
     }
-
-    document.querySelectorAll("#card").forEach(element => {
-        element.addEventListener("click", (event) => {
-            let targetElement = event.currentTarget;
-            let attribute = targetElement.getAttribute("name");
-
-            if (selectedCard.length < 2 && !selectedCard.includes(attribute)) {
-                selectedCard.push(attribute);
-                targetElement.classList.add("rotate180");
-                targetElement.classList.add("pointer-events-none");
-                clickSound.cloneNode().play();
-
-                if (selectedCard.length === 2) {
-                    const card1 = cardData[selectedCard[0]]?.name;
-                    const card2 = cardData[selectedCard[1]]?.name;
-
-                    if (card1 === card2) {
-                        cardTotal -= 1;
-                        setTimeout(removeMatchedCard, 500);
-                    } else {
-                        setTimeout(resetFlippedCard, 500);
-                    }
-                }
-            }
-
-            if (cardTotal === 0) {
-                setTimeout(() => {
-                    console.log("Gameover!");
-                    winSound.cloneNode().play();
-                }, 1000);
-                setTimeout(() => window.location.reload(), 3000);
-            }
-        });
-    });
 }
 
 function loadEmojiData() {
@@ -72,8 +85,6 @@ function loadEmojiData() {
         "xh404": { "name": "orange", "emoji": "🍊" },
         "xh405": { "name": "watermelon", "emoji": "🍉" },
         "xh406": { "name": "strawberry", "emoji": "🍓" },
-
-        // pasangan
         "xh407": { "name": "apple", "emoji": "🍎" },
         "xh408": { "name": "banana", "emoji": "🍌" },
         "xh409": { "name": "grape", "emoji": "🍇" },
@@ -117,4 +128,9 @@ function loadSoundEffect() {
     flippedSound = new Audio('./sounds/flipped.mp3')
     matchedSound = new Audio('./sounds/matched.mp3');
     winSound = new Audio('./sounds/win.mp3');
+    mouseClick = new Audio("./sounds/click.mp3")
+}
+
+function rewardSection() {
+
 }
