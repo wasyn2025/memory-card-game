@@ -1,22 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
+    loadSoundEffect();
     loadEmojiData();
     generateCard();
 });
 
 let selectedCard = [];
 let cardData = {};
-// selectedCard.push("xh401");
-// selectedCard.push("xh402");
-// selectedCard.push("xh403");
-// selectedCard.push("xh404");
-
-// console.log(selectedCard.shift());
-// console.log(selectedCard.shift());
-// console.log(selectedCard);
-
-
-let cardTotal = 12 / 2;
+let cardTotal = 0;
 const cardContainer = document.querySelector("#card-container");
+let clickSound, winSound = null;
 
 function generateCard() {
     cardContainer.innerHTML = '';
@@ -46,6 +38,7 @@ function generateCard() {
                 selectedCard.push(attribute);
                 targetElement.classList.add("rotate180");
                 targetElement.classList.add("pointer-events-none");
+                clickSound.cloneNode().play();
 
                 if (selectedCard.length === 2) {
                     const card1 = cardData[selectedCard[0]]?.name;
@@ -53,6 +46,7 @@ function generateCard() {
 
                     if (card1 === card2) {
                         console.log("Kartu sama! +5");
+                        winSound.cloneNode().play();
                         cardTotal -= 1;
                         setTimeout(removeMatchedCard, 500);
                     } else {
@@ -86,6 +80,7 @@ function loadEmojiData() {
         "xh411": { "name": "watermelon", "emoji": "🍉" },
         "xh412": { "name": "strawberry", "emoji": "🍓" },
     };
+    cardTotal = cardData.length / 2;
 }
 
 function resetFlippedCard() {
@@ -100,4 +95,9 @@ function removeMatchedCard() {
     document.querySelector(`[name="${selectedCard[0]}"]`).parentElement.classList.add("opacity-0");
     document.querySelector(`[name="${selectedCard[1]}"]`).parentElement.classList.add("opacity-0");
     selectedCard.length = [];
+}
+
+function loadSoundEffect() {
+    clickSound = new Audio('./sounds/clicksound.mp3');
+    winSound = new Audio('./sounds/winsound.mp3')
 }
