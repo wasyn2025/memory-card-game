@@ -1,31 +1,26 @@
 document.addEventListener("DOMContentLoaded", () => {
+    loadEmojiData();
     generateCard();
 });
 
 let selectedCard = [];
-const cardData = {
-    "xh401": { "name": "apple", "emoji": "🍎" },
-    "xh402": { "name": "banana", "emoji": "🍌" },
-    "xh403": { "name": "grape", "emoji": "🍇" },
-    "xh404": { "name": "orange", "emoji": "🍊" },
-    "xh405": { "name": "watermelon", "emoji": "🍉" },
-    "xh406": { "name": "strawberry", "emoji": "🍓" },
+let cardData = {};
+// selectedCard.push("xh401");
+// selectedCard.push("xh402");
+// selectedCard.push("xh403");
+// selectedCard.push("xh404");
 
-    // pasangan
-    "xh407": { "name": "apple", "emoji": "🍎" },
-    "xh408": { "name": "banana", "emoji": "🍌" },
-    "xh409": { "name": "grape", "emoji": "🍇" },
-    "xh410": { "name": "orange", "emoji": "🍊" },
-    "xh411": { "name": "watermelon", "emoji": "🍉" },
-    "xh412": { "name": "strawberry", "emoji": "🍓" },
-};
+// console.log(selectedCard.shift());
+// console.log(selectedCard.shift());
+// console.log(selectedCard);
+
+
 let cardTotal = 12 / 2;
 const cardContainer = document.querySelector("#card-container");
 
 function generateCard() {
-    const cardDataEntries = Object.entries(cardData);
-    console.log(cardDataEntries);
     cardContainer.innerHTML = '';
+    const cardDataEntries = Object.entries(cardData);
 
     for (let i = 0; i < 12; i++) {
         const id = cardDataEntries[i][0];
@@ -59,24 +54,38 @@ function generateCard() {
                     if (card1 === card2) {
                         console.log("Kartu sama! +5");
                         cardTotal -= 1;
-                        console.log(cardTotal);
-                        setTimeout(removeMatchedCard, 1000);
+                        setTimeout(removeMatchedCard, 500);
                     } else {
                         console.log("Kartu berbeda!");
-                        setTimeout(resetFlippedCard, 1000);
+                        setTimeout(resetFlippedCard, 500);
                     }
                 }
             }
 
             if (cardTotal === 0) {
-                setTimeout(() => alert("Gameover!"), 1000);
+                setTimeout(() => alert("Gameover!"), 1500);
             }
         });
     });
 }
 
 function loadEmojiData() {
+    cardData = {
+        "xh401": { "name": "apple", "emoji": "🍎" },
+        "xh402": { "name": "banana", "emoji": "🍌" },
+        "xh403": { "name": "grape", "emoji": "🍇" },
+        "xh404": { "name": "orange", "emoji": "🍊" },
+        "xh405": { "name": "watermelon", "emoji": "🍉" },
+        "xh406": { "name": "strawberry", "emoji": "🍓" },
 
+        // pasangan
+        "xh407": { "name": "apple", "emoji": "🍎" },
+        "xh408": { "name": "banana", "emoji": "🍌" },
+        "xh409": { "name": "grape", "emoji": "🍇" },
+        "xh410": { "name": "orange", "emoji": "🍊" },
+        "xh411": { "name": "watermelon", "emoji": "🍉" },
+        "xh412": { "name": "strawberry", "emoji": "🍓" },
+    };
 }
 
 function resetFlippedCard() {
