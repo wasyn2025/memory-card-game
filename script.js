@@ -30,6 +30,10 @@ document.addEventListener("DOMContentLoaded", () => {
     loadEmojiData();
     generateCard();
 
+    if (localStorage.getItem("memoryCardGameHighscore")) {
+        highscoreText.textContent = (highscore = parseInt(localStorage.getItem("memoryCardGameHighscore")));
+    }
+
     document.querySelectorAll("button[clickable]").forEach(element => {
         element.addEventListener("click", (event) => {
             mouseClick.cloneNode().play();
@@ -94,6 +98,7 @@ function generateCard() {
                         highscoreText.textContent = highscore + (Math.abs(score - highscore));
                         giveHighscore();
                     }
+                    localStorage.setItem("memoryCardGameHighscore", highscoreText.textContent);
                 }, 3000);
             }
         });
