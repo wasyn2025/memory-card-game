@@ -3,6 +3,7 @@ const scoreText = document.querySelector("#score-text");
 const cardContainer = document.querySelector("#card-container");
 const highscoreText = document.querySelector("#highscore-text");
 const highscoreInfo = document.querySelector("#highscore-info");
+const currentLevel = document.querySelector("#current-level");
 
 const buttonActions = {
     back: () => {
@@ -11,8 +12,8 @@ const buttonActions = {
     restart: () => {
         loadEmojiData();
         generateCard();
-        scoreText.textContent = 0;
-        score = 0;
+        scoreText.textContent = (score = 0);
+        currentLevel.textContent = (level = 1);
     }
 }
 
@@ -22,6 +23,7 @@ let cardTotal = 0;
 let clickSound, flippedSound, matchedSound, winSound, mouseClick = null;
 let score = parseInt(scoreText.textContent) || 0;
 let highscore = parseInt(highscoreInfo.textContent) || 0;
+let level = 1;
 
 document.addEventListener("DOMContentLoaded", () => {
     loadSoundEffect();
@@ -87,6 +89,7 @@ function generateCard() {
                 setTimeout(() => {
                     loadEmojiData();
                     generateCard();
+                    currentLevel.textContent = (level += 1);
                     if (score > highscore) {
                         highscoreText.textContent = highscore + (Math.abs(score - highscore));
                         giveHighscore();
@@ -133,7 +136,6 @@ function giveHighscore() {
     const scoreDifference = (highscore === 0 ? score : Math.abs(score - highscore))
     highscoreInfo.textContent = `+${scoreDifference}`;
     highscore = highscore + scoreDifference;
-    console.log(highscore);
 }
 
 function shuffleCardData(cardData) {
@@ -171,4 +173,8 @@ function loadSoundEffect() {
     matchedSound = new Audio('./sounds/matched.mp3');
     winSound = new Audio('./sounds/win.mp3');
     mouseClick = new Audio("./sounds/click.mp3")
+}
+
+function nextLevel() {
+
 }
