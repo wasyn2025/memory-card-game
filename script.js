@@ -4,18 +4,32 @@ const cardContainer = document.querySelector("#card-container");
 const highscoreText = document.querySelector("#highscore-text");
 const highscoreInfo = document.querySelector("#highscore-info");
 const currentLevel = document.querySelector("#current-level");
-
-const buttonActions = {
-    back: () => {
-        console.log("Tombol kembali!");
-    },
-    restart: () => {
-        loadEmojiData();
-        generateCard();
-        scoreText.textContent = (score = 0);
-        currentLevel.textContent = (level = 1);
-    }
-}
+const cardPool = [
+    { name: "apple", emoji: "🍎" },
+    { name: "banana", emoji: "🍌" },
+    { name: "grape", emoji: "🍇" },
+    { name: "orange", emoji: "🍊" },
+    { name: "watermelon", emoji: "🍉" },
+    { name: "strawberry", emoji: "🍓" },
+    { name: "pineapple", emoji: "🍍" },
+    { name: "peach", emoji: "🍑" },
+    { name: "cherry", emoji: "🍒" },
+    { name: "kiwi", emoji: "🥝" },
+    { name: "lemon", emoji: "🍋" },
+    { name: "mango", emoji: "🥭" },
+    { name: "pear", emoji: "🍐" },
+    { name: "coconut", emoji: "🥥" },
+    { name: "avocado", emoji: "🥑" },
+    { name: "melon", emoji: "🍈" },
+    { name: "carrot", emoji: "🥕" },
+    { name: "corn", emoji: "🌽" },
+    { name: "eggplant", emoji: "🍆" },
+    { name: "pepper", emoji: "🌶️" },
+    { name: "broccoli", emoji: "🥦" },
+    { name: "potato", emoji: "🥔" },
+    { name: "tomato", emoji: "🍅" },
+    { name: "cucumber", emoji: "🥒" }
+];
 
 let selectedCard = [];
 let cardData = {};
@@ -23,7 +37,8 @@ let cardTotal = 0;
 let clickSound, flippedSound, matchedSound, winSound, mouseClick = null;
 let score = parseInt(scoreText.textContent) || 0;
 let highscore = parseInt(highscoreInfo.textContent) || 0;
-let level = 1;
+let level = 1
+let difficulty = { "tile": [], "maxWidth": "", "cardMark": "" };
 
 document.addEventListener("DOMContentLoaded", () => {
     loadSoundEffect();
@@ -34,31 +49,33 @@ document.addEventListener("DOMContentLoaded", () => {
         highscoreText.textContent = (highscore = parseInt(localStorage.getItem("memoryCardGameHighscore")));
     }
 
-    document.querySelectorAll("button[clickable]").forEach(element => {
-        element.addEventListener("click", (event) => {
-            mouseClick.cloneNode().play();
-            let action = event.currentTarget.dataset.action;
-            if (buttonActions[action]) {
-                buttonActions[action]();
-            }
-        });
+    document.querySelector("#restart").addEventListener("click", () => {
+        mouseClick.cloneNode().play();
+        restart();
     });
 });
 
 function generateCard() {
     cardContainer.innerHTML = '';
     const cardDataEntries = Object.entries(cardData);
+    const difficulty = getDifficulty(level);
+    console.log(level);
+    console.log(difficulty);
+    const mark = difficulty.cardMark;
 
-    for (let i = 0; i < cardTotal * 2; i++) {
+    cardContainer.style.gridTemplateColumns = `repeat(${difficulty.tile[0]}, minmax(0, 1fr))`;
+    cardContainer.style.maxWidth = difficulty.maxWidth;
+
+    for (let i = 0; i < difficulty.tile[0] * difficulty.tile[1]; i++) {
         const id = cardDataEntries[i][0];
         const emoji = cardDataEntries[i][1].emoji;
 
-        cardContainer.innerHTML += `<div class="card-wrapper transition-all duration-600">
+        cardContainer.innerHTML += `<div class="card-wrapper card-size transition-all duration-600 aspect-[2/3]">
             <div class="h-full rounded-md group cursor-pointer border border-white p-3 bg-stone-800 flex items-center justify-center transition-all duration-600 hover:shadow-[0_0_15px_rgba(255,255,255,0.35)]"
                 id="card" name="${id}">
                 <div
-                    class="text-white text-5xl font-bold opacity-75 transition-opacity duration-200 group-hover:opacity-100">
-                    ${emoji}</div>
+                    class="text-white text-3xl md:text-5xl font-semibold opacity-50 transition-opacity duration-200 group-hover:opacity-100">
+                    ${mark == "number" ? i + 1 : "?"}</div>
                 <div id="card-back-content" class="card-back text-white text-5xl rounded-md">${emoji}</div>
             </div> 
         </div>`;
@@ -97,34 +114,51 @@ function generateCard() {
 }
 
 function nextLevel() {
+    currentLevel.textContent = (level += 1);
     loadEmojiData();
     generateCard();
-    currentLevel.textContent = (level += 1);
 
     if (score > highscore) {
         highscoreText.textContent = highscore + (Math.abs(score - highscore));
-        localStorage.setItem("memoryCardGameHighscore",);
+        localStorage.setItem("memoryCardGameHighscore", highscoreText.textContent);
         giveHighscore();
     }
 }
 
+function restart() {
+    scoreText.textContent = (score = 0);
+    currentLevel.textContent = (level = 1);
+    loadEmojiData();
+    generateCard();
+}
+
 function loadEmojiData() {
-    cardData = {
-        "xh401": { "name": "apple", "emoji": "🍎" },
-        "xh402": { "name": "banana", "emoji": "🍌" },
-        "xh403": { "name": "grape", "emoji": "🍇" },
-        "xh404": { "name": "orange", "emoji": "🍊" },
-        "xh405": { "name": "watermelon", "emoji": "🍉" },
-        "xh406": { "name": "strawberry", "emoji": "🍓" },
-        "xh407": { "name": "apple", "emoji": "🍎" },
-        "xh408": { "name": "banana", "emoji": "🍌" },
-        "xh409": { "name": "grape", "emoji": "🍇" },
-        "xh410": { "name": "orange", "emoji": "🍊" },
-        "xh411": { "name": "watermelon", "emoji": "🍉" },
-        "xh412": { "name": "strawberry", "emoji": "🍓" },
-    };
+    cardData = generateCardData(getDifficulty(level).tile);
     cardTotal = Object.keys(cardData).length / 2;
-    cardData = shuffleCardData(cardData);
+}
+
+function generateCardData(tile) {
+    const totalCard = tile[0] * tile[1];
+    const totalPair = totalCard / 2;
+    const selectedCards = cardPool.slice(0, totalPair);
+    const result = {};
+    let id = 401;
+
+    selectedCards.forEach(card => {
+        // pair pertama
+        result[`xh${id++}`] = {
+            name: card.name,
+            emoji: card.emoji
+        };
+
+        // pair kedua
+        result[`xh${id++}`] = {
+            name: card.name,
+            emoji: card.emoji
+        };
+    });
+
+    return shuffleCardData(result);
 }
 
 function giveReward() {
@@ -181,4 +215,36 @@ function loadSoundEffect() {
     matchedSound = new Audio('./sounds/matched.mp3');
     winSound = new Audio('./sounds/win.mp3');
     mouseClick = new Audio("./sounds/click.mp3")
+}
+
+function getDifficulty(level) {
+    if (level <= 3) {
+        return {
+            "tile": [2, 2],
+            "maxWidth": "300px",
+            "cardMark": "number"
+        };
+    }
+
+    if (level <= 6) {
+        return {
+            "tile": [4, 3],
+            "maxWidth": "400px",
+            "cardMark": "number"
+        };
+    }
+
+    if (level <= 12) {
+        return {
+            "tile": [6, 4],
+            "maxWidth": "700px",
+            "cardMark": "number"
+        };
+    }
+
+    return {
+        "tile": [8, 6],
+        "maxWidth": "900px",
+        "cardMark": "question"
+    };
 }

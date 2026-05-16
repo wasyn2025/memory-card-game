@@ -39,10 +39,10 @@
 .slide-fade {
     transform: translateY(30px);
     opacity: 0;
-    animation: slideFade 1s linear forwards; 
+    animation: slideFade 1s linear forwards;
 }
 
-@keyframes slideFade  {
+@keyframes slideFade {
     from {
         opacity: 0;
         transform: translateY(20px)

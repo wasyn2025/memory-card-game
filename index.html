@@ -22,20 +22,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="min-h-dvh bg-stone-900 p-5">
+<body class="bg-stone-900 px-5 py-3">
 
     <!-- header -->
-    <div class="mb-5 flex items-center justify-between">
-        <div class="flex items-center justify-between gap-3">
-            <button clickable data-action="back"
-                class="active:scale-[0.98] bg-white flex justify-center items-center rounded-md p-2 cursor-pointer">
-                <i data-lucide="arrow-left" class="size-[18px]"></i>
-            </button>
-            <button clickable data-action="restart"
-                class="active:scale-[0.98] bg-red-500 flex justify-center items-center rounded-md p-2 cursor-pointer">
-                <i data-lucide="rotate-ccw" class="size-[18px] text-red-950"></i>
-            </button>
-        </div>
+    <div class="flex items-center justify-between fixed z-1 top-0 left-0 right-0 w-full px-5 py-3 bg-stone-900">
+        <button id="restart"
+            class="active:scale-[0.98] bg-red-500 flex justify-center items-center rounded-md p-2 cursor-pointer">
+            <i data-lucide="rotate-ccw" class="size-[18px] text-red-950"></i>
+        </button>
         <div class="flex items-center gap-3">
             <div title="Highscore" class="flex items-center gap-1.5 bg-blue-400 rounded-md py-2 px-3">
                 <span class="text-blue-900 text-sm">Level</span>
@@ -63,7 +57,8 @@
     </div>
 
     <!-- main content -->
-    <div id="card-container" class="grid grid-cols-[repeat(4,100px)] w-fit mx-auto auto-rows-[150px] gap-2">
+    <div id="card-container" class="grid mx-auto justify-center my-15 gap-2"
+        style="grid-template-columns: repeat(4, minmax(0, 1fr));">
     </div>
 
     <div
