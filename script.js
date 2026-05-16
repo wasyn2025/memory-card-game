@@ -90,19 +90,22 @@ function generateCard() {
 
             if (cardTotal === 0) {
                 setTimeout(() => winSound.cloneNode().play(), 1000);
-                setTimeout(() => {
-                    loadEmojiData();
-                    generateCard();
-                    currentLevel.textContent = (level += 1);
-                    if (score > highscore) {
-                        highscoreText.textContent = highscore + (Math.abs(score - highscore));
-                        giveHighscore();
-                    }
-                    localStorage.setItem("memoryCardGameHighscore", highscoreText.textContent);
-                }, 3000);
+                setTimeout(() => nextLevel(), 3000);
             }
         });
     });
+}
+
+function nextLevel() {
+    loadEmojiData();
+    generateCard();
+    currentLevel.textContent = (level += 1);
+
+    if (score > highscore) {
+        highscoreText.textContent = highscore + (Math.abs(score - highscore));
+        localStorage.setItem("memoryCardGameHighscore",);
+        giveHighscore();
+    }
 }
 
 function loadEmojiData() {
@@ -178,8 +181,4 @@ function loadSoundEffect() {
     matchedSound = new Audio('./sounds/matched.mp3');
     winSound = new Audio('./sounds/win.mp3');
     mouseClick = new Audio("./sounds/click.mp3")
-}
-
-function nextLevel() {
-
 }
