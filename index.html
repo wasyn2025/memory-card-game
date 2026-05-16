@@ -37,9 +37,14 @@
             </button>
         </div>
         <div class="flex items-center gap-3">
-            <div title="Highscore" class="flex items-center gap-1.5 bg-amber-400 rounded-md py-2 px-3">
-                <i data-lucide="trophy" class="size-[18px] text-amber-900"></i>
-                <span id="highscore-text" class="font-semibold text-sm text-amber-900">0</span>
+            <div class="relative">
+                <div title="Highscore" class="flex items-center gap-1.5 bg-amber-400 rounded-md py-2 px-3">
+                    <i data-lucide="trophy" class="size-[18px] text-amber-900"></i>
+                    <span id="highscore-text" class="font-semibold text-sm text-amber-900">0</span>
+                </div>
+                <div class="text-white p-2 w-full absolute">
+                    <div id="highscore-info" class="text-center text-sm text-amber-500 opacity-0">0</div>
+                </div>
             </div>
             <div class="relative">
                 <div title="Score" class="flex items-center gap-1.5 bg-emerald-500 rounded-md py-2 px-3">

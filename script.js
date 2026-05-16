@@ -2,6 +2,7 @@ const scoreInfo = document.querySelector("#score-info");
 const scoreText = document.querySelector("#score-text");
 const cardContainer = document.querySelector("#card-container");
 const highscoreText = document.querySelector("#highscore-text");
+const highscoreInfo = document.querySelector("#highscore-info");
 
 const buttonActions = {
     back: () => {
@@ -20,6 +21,7 @@ let cardData = {};
 let cardTotal = 0;
 let clickSound, flippedSound, matchedSound, winSound, mouseClick = null;
 let score = parseInt(scoreText.textContent) || 0;
+let highscore = parseInt(highscoreInfo.textContent) || 0;
 
 document.addEventListener("DOMContentLoaded", () => {
     loadSoundEffect();
@@ -30,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         element.addEventListener("click", (event) => {
             mouseClick.cloneNode().play();
             let action = event.currentTarget.dataset.action;
-            if(buttonActions[action]) {
+            if (buttonActions[action]) {
                 buttonActions[action]();
             }
         });
@@ -50,7 +52,7 @@ function generateCard() {
                 id="card" name="${id}">
                 <div
                     class="text-white text-5xl font-bold opacity-75 transition-opacity duration-200 group-hover:opacity-100">
-                    ?</div>
+                    ${emoji}</div>
                 <div id="card-back-content" class="card-back text-white text-5xl rounded-md">${emoji}</div>
             </div> 
         </div>`;
@@ -85,7 +87,10 @@ function generateCard() {
                 setTimeout(() => {
                     loadEmojiData();
                     generateCard();
-                    highscoreText.textContent = scoreText.textContent;
+                    if (score > highscore) {
+                        highscoreText.textContent = highscore + (Math.abs(score - highscore));
+                        giveHighscore();
+                    }
                 }, 3000);
             }
         });
@@ -118,6 +123,17 @@ function giveReward() {
 
     score += 100;
     scoreText.textContent = score;
+}
+
+function giveHighscore() {
+    highscoreInfo.classList.remove("slide-fade");
+    void highscoreInfo.offsetWidth;
+    highscoreInfo.classList.add("slide-fade");
+
+    const scoreDifference = (highscore === 0 ? score : Math.abs(score - highscore))
+    highscoreInfo.textContent = `+${scoreDifference}`;
+    highscore = highscore + scoreDifference;
+    console.log(highscore);
 }
 
 function shuffleCardData(cardData) {
