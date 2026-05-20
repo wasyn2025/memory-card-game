@@ -59,8 +59,6 @@ function generateCard() {
     cardContainer.innerHTML = '';
     const cardDataEntries = Object.entries(cardData);
     const difficulty = getDifficulty(level);
-    console.log(level);
-    console.log(difficulty);
     const mark = difficulty.cardMark;
 
     cardContainer.style.gridTemplateColumns = `repeat(${difficulty.tile[0]}, minmax(0, 1fr))`;
